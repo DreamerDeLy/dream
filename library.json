@@ -1,0 +1,25 @@
+{
+	"name": "DREAM",
+	"keywords": "Debug, CLI, Logging, Data, Values, Timer, Stopwatch",
+	"description": "DREAM - Dynamic Real-time Embedded Arduino Modules",
+	"authors":
+	[
+	  {
+		"name": "Dmytro DeLy Obukhov",
+		"email": "dreamerandprogrammer@gmail.com",
+		"maintainer": true
+	  }
+	],
+	"repository": 
+	{
+		"type": "git",
+		"url": "https://github.com/DreamerDeLy/dream.git"
+	},
+	"version": "0.1.0",
+	"license": "GPL-3.0-or-later",
+	"frameworks": "arduino",
+	"platforms": 
+	[
+	  "espressif"
+	]
+  }
