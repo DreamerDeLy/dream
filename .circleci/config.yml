@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: suculent/platformio-docker-build
+    steps:
+      - checkout
+      - run: pio ci --board=esp32dev examples/SerialLogger/ --lib src/
