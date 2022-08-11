@@ -6,3 +6,5 @@ jobs:
     steps:
       - checkout
       - run: pio ci --board=esp32dev examples/SerialLogger/ --lib src/
+      - run: pio ci --board=esp32dev examples/CLI/ --lib src/
+      - run: pio ci --board=esp32dev examples/Values/ --lib src/
