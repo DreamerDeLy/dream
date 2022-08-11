@@ -1,6 +1,6 @@
 /*
 ================================================================================
- DREAM core / SerialLogging module
+ DREAM core / SerialLog module
 --------------------------------------------------------------------------------
 
  Module for logging into any Stream object using macros that collect data about 
@@ -17,45 +17,38 @@
 #pragma once
 
 #include <Arduino.h>
+#include <vector>
 #include <time.h>
 
 namespace dream 
 {
-	class SerialLogging
+	class SerialLog
 	{
 		private: //-------------------------------------------------------------
 
-		static std::vector<Stream*> outputs;
+		// Outputs to logging in
+		static std::vector<Stream*> _outputs;
 		
 		public: //--------------------------------------------------------------
 
+		// Add output to logging in
 		static void addOutput(Stream *stream);
-		static inline char* timenow();
-		static void printf(const char* format, ...);
+
+		// Used in macros
+		static void _printf(const char* format, ...);
 	};
 
-	std::vector<Stream*> SerialLogging::outputs = { };
-			
-	void SerialLogging::addOutput(Stream *stream)
+	// Initialize `_outputs`
+	std::vector<Stream*> SerialLog::_outputs = { };
+	
+	// Add output to logging in
+	void SerialLog::addOutput(Stream *stream)
 	{
-		outputs.push_back(stream);
+		_outputs.push_back(stream);
 	}
 
-	inline char* SerialLogging::timenow()
-	{
-		static char buffer[64];
-		time_t rawtime;
-		struct tm *timeinfo;
-
-		time(&rawtime);
-		timeinfo = localtime(&rawtime);
-
-		strftime(buffer, 64, "%Y-%m-%d %H:%M:%S", timeinfo);
-
-		return buffer;
-	}
-
-	void SerialLogging::printf(const char* format, ...)
+	// `printf` function 
+	void SerialLog::_printf(const char* format, ...)
 	{
 		va_list arg;
 		va_start(arg, format);
@@ -75,7 +68,7 @@ namespace dream
 			va_end(arg);
 		}
 
-		for (Stream *s : SerialLogging::outputs) s->write(buffer);
+		for (Stream *s : SerialLog::_outputs) s->write(buffer);
 	}
 }
 
@@ -95,20 +88,20 @@ namespace dream
 
 
 // Printing function
-#define PRINTFUNCTION(format, ...)      dream::SerialLogging::printf(format, __VA_ARGS__)
+#define PRINTFUNCTION(format, ...)      dream::SerialLog::_printf(format, __VA_ARGS__)
 // #define PRINTFUNCTION(format, ...)      fprintf(stderr, format, __VA_ARGS__)
 
 // Log line template
-#define LOG_FMT             "%s | %-7s | %-15s | %s:%d | "
-#define LOG_ARGS(LOG_TAG)   dream::SerialLogging::timenow(), LOG_TAG, _FILE, __FUNCTION__, __LINE__
+#define LOG_FMT             " %s | %s:%d\t | %-12s | "
+#define LOG_ARGS(LOG_TAG)   LOG_TAG, _FILE, __LINE__, __FUNCTION__
 
 // Line ending
 #define NEWLINE     "\n"
 
 // Tag names
-#define ERROR_TAG   "ERROR"
-#define INFO_TAG    "INFO"
-#define DEBUG_TAG   "DEBUG"
+#define ERROR_TAG   "[E]"
+#define INFO_TAG    "[I]"
+#define DEBUG_TAG   "[D]"
 
 #if LOG_LEVEL >= DEBUG_LEVEL
 #define LOG_DEBUG(message, args...)     PRINTFUNCTION(LOG_FMT message NEWLINE, LOG_ARGS(DEBUG_TAG), ## args)

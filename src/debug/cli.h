@@ -26,7 +26,7 @@ namespace dream
 
 	class CommandLineInterface
 	{
-		private: //-----------------------------------------------------------------
+		private: //-------------------------------------------------------------
 
 		struct Command
 		{
@@ -45,7 +45,7 @@ namespace dream
 			{
 				if (c != separator)
 				{
-					// Add tu result
+					// Add to result
 					result += c;
 				}
 				else
@@ -83,50 +83,59 @@ namespace dream
 			return result;
 		}
 
-		public: //------------------------------------------------------------------
+		void command_help(CommandParams params)
+		{
+			LOG_DEBUG("Available commands:");
+			for (const Command &c : commands)
+			{
+				LOG_DEBUG(" - %s %s", c.name.c_str(), c.info.c_str());
+			}
+		}
+
+		public: //--------------------------------------------------------------
 
 		CommandLineInterface() { }
 
+		// Init CLI
 		void init()
 		{
 			commands.push_back({"help", "Print info about CLI commands.", std::bind(&CommandLineInterface::command_help, this, std::placeholders::_1)});
 		}
 
+		// Add command to CLI
 		void addCommand(Command cmd)
 		{
 			commands.push_back(cmd);
 		}
 
+		// Run command from string
 		void run(String command)
 		{
 			if (command.isEmpty()) return;
+
+			// Trim string
 			command.trim();
 
+			// Parse command name and arguments
 			const String name = getFirstArgument(command, ' ');
 			const std::vector<String> params = splitString(command.substring(name.length()), ' ');
 
+			// Find command
 			for (const Command &c : commands)
 			{
 				if (c.name == name)
 				{
-					LOG_DEBUG("[CLI] Run command \"%s\"", command.c_str());
+					// Run command
+					LOG_INFO("[CLI] Run command \"%s\"", command.c_str());
 					c.run(params);
 
 					return;
 				}
 			}
 			
-			LOG_DEBUG("[CLI] Command \"%s\" not found", command.c_str());
+			// Command wasn't found
+			LOG_INFO("[CLI] Command \"%s\" not found", command.c_str());
 			return;
-		}
-
-		void command_help(CommandParams params)
-		{
-			LOG_DEBUG("Available commands:");
-			for (const Command &c : commands)
-			{
-				LOG_DEBUG(" - %s %s", c.name, c.info);
-			}
 		}
 	};
 }
