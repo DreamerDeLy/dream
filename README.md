@@ -25,7 +25,7 @@ Also you can select specific version, using tag:
 
 ```ini
 lib_deps = 
-	https://github.com/DreamerDeLy/dream.git#0.2.0
+	https://github.com/DreamerDeLy/dream.git#v0.2.0
 ```
 
 **For ArduinoIDE**: 
@@ -54,8 +54,9 @@ This project created with [PlatformIO](https://platformio.org/).
 Use this commands to build examples: 
 
 ```powershell
-pio ci --board=esp32dev examples/SerialLogger/ --lib src/
 pio ci --board=esp32dev examples/CLI/ --lib src/
+pio ci --board=esp32dev examples/SerialLogging/ --lib src/
+pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
 pio ci --board=esp32dev examples/Values/ --lib src/
 ```
 

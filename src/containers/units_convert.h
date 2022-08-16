@@ -90,9 +90,10 @@ namespace dream
 			return (0.0409f * (val / 1000.0f) * molecularWeight);
 		}
 
-	public:
+	public: 
 		UnitsConvert(const Value *value) : v(value) { }
 
+		// Convert gas concentration to PPB (Particles Per Billion)
 		float toPPB()
 		{
 			if (v->unit == "ppb")
@@ -111,12 +112,14 @@ namespace dream
 			return NULL_FLOAT;
 		}
 
+		// Convert gas concentration to PPB (Particles Per Million)
 		float toPPM()
 		{
 			float ppb = toPPB();
 			return (ppb != NULL_FLOAT ? ppb / 1000 : NULL_FLOAT);
 		}
 
+		// Convert gas concentration to mg/m³
 		float toMGM3()
 		{
 			if (v->unit == "ppb")
@@ -135,6 +138,7 @@ namespace dream
 			return NULL_FLOAT;
 		}
 
+		// Convert gas concentration to µg/m³
 		float toUGM3()
 		{
 			float mgm3 = toMGM3();
