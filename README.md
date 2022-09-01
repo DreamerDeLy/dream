@@ -58,6 +58,8 @@ pio ci --board=esp32dev examples/CLI/ --lib src/
 pio ci --board=esp32dev examples/SerialLogging/ --lib src/
 pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
 pio ci --board=esp32dev examples/Values/ --lib src/
+pio ci --board=esp32dev examples/TimerSimple/ --lib src/
+pio ci --board=esp32dev examples/TimerCallbacks/ --lib src/
 ```
 
 Use this command to run tests (you have to have connected ESP32 to your computer):

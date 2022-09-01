@@ -9,3 +9,5 @@ jobs:
       - run: pio ci --board=esp32dev examples/SerialLogging/ --lib src/
       - run: pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
       - run: pio ci --board=esp32dev examples/Values/ --lib src/
+      - run: pio ci --board=esp32dev examples/TimerSimple/ --lib src/
+      - run: pio ci --board=esp32dev examples/TimerCallbacks/ --lib src/
