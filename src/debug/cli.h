@@ -17,17 +17,19 @@
 #include <Arduino.h>
 #include <functional>
 
-#include "serial_logging.h"
-
 namespace dream
 {
+	// Function parameters 
 	typedef std::vector<String> CommandParams;
+
+	// Command function
 	typedef std::function<void(CommandParams)> CommandFunction;
 
 	class CommandLineInterface
 	{
 		private: //-------------------------------------------------------------
 
+		// Command struct
 		struct Command
 		{
 			String name;
@@ -35,8 +37,16 @@ namespace dream
 			CommandFunction run;
 		};
 
-		std::vector<Command> commands;
+		// Available commands list
+		std::vector<Command> _commands;
 
+		// Source for continuous reading
+		Stream *_source = nullptr;
+
+		// Function to call in case of error
+		std::function<void(String)> _errorHandler;
+
+		// Get first substring by separator
 		static String getFirstArgument(const String &data, const char separator)
 		{
 			String result = "";
@@ -58,6 +68,7 @@ namespace dream
 			return result;
 		}
 
+		// Split string by separator
 		static std::vector<String> splitString(const String &data, const char separator)
 		{
 			std::vector<String> result;
@@ -83,29 +94,50 @@ namespace dream
 			return result;
 		}
 
-		void command_help(CommandParams params)
-		{
-			LOG_DEBUG("Available commands:");
-			for (const Command &c : commands)
-			{
-				LOG_DEBUG(" - %s %s", c.name.c_str(), c.info.c_str());
-			}
-		}
-
 		public: //--------------------------------------------------------------
 
+		// Init CLI in basic mode
+		// In this mode you have to manually cal `run(string)` method.
 		CommandLineInterface() { }
 
-		// Init CLI
-		void init()
+		// Init CLI with reading from source 
+		// In this mode you have to place `tick()` method call to your `loop()` 
+		// or you still can use `run(string)` method as well.
+		CommandLineInterface(Stream *s) : _source(s) { }
+		CommandLineInterface(Stream &s) : _source(&s) { }
+
+		// Change mode to reading from source
+		void setSource(Stream *s) { _source = s; }
+		void setSource(Stream &s) { _source = &s; }
+
+		// Set function to call in case of error
+		// Error message will be set as String argument
+		void onError(std::function<void(String)> f) { _errorHandler = f; }
+
+		// Read commands from source 
+		void tick()
 		{
-			commands.push_back({"help", "Print info about CLI commands.", std::bind(&CommandLineInterface::command_help, this, std::placeholders::_1)});
+			// If source exist
+			if (_source != nullptr)
+			{
+				if (_source->available() > 0)
+				{
+					// Read from source and run
+					run(_source->readString());
+				}
+			}
 		}
 
 		// Add command to CLI
 		void addCommand(Command cmd)
 		{
-			commands.push_back(cmd);
+			_commands.push_back(cmd);
+		}
+
+		// Get available commands
+		std::vector<Command> getCommands()
+		{
+			return _commands;
 		}
 
 		// Run command from string
@@ -121,12 +153,11 @@ namespace dream
 			const std::vector<String> params = splitString(command.substring(name.length()), ' ');
 
 			// Find command
-			for (const Command &c : commands)
+			for (const Command &c : _commands)
 			{
 				if (c.name == name)
 				{
 					// Run command
-					LOG_INFO("[CLI] Run command \"%s\"", command.c_str());
 					c.run(params);
 
 					return;
@@ -134,7 +165,7 @@ namespace dream
 			}
 			
 			// Command wasn't found
-			LOG_INFO("[CLI] Command \"%s\" not found", command.c_str());
+			_errorHandler("[CLI] Command " + command + " not found");
 			return;
 		}
 	};
