@@ -17,7 +17,6 @@
 #pragma once
 
 #include <Arduino.h>
-#include <vector>
 #include <time.h>
 
 namespace dream 
@@ -26,26 +25,21 @@ namespace dream
 	{
 		private: //-------------------------------------------------------------
 
-		// Outputs to logging in
-		static std::vector<Stream*> _outputs;
+		// Output to logging in
+		static Stream* _output;
 		
 		public: //--------------------------------------------------------------
 
 		// Add output to logging in
-		static void addOutput(Stream *stream);
+		static void setOutput(Stream *stream) { _output = stream; }
+		static void setOutput(Stream &stream) { _output = &stream; }
 
 		// Used in macros
 		static void _printf(const char* format, ...);
 	};
 
 	// Initialize `_outputs`
-	std::vector<Stream*> SerialLog::_outputs = { };
-	
-	// Add output to logging in
-	void SerialLog::addOutput(Stream *stream)
-	{
-		_outputs.push_back(stream);
-	}
+	Stream* SerialLog::_output = &Serial;
 
 	// `printf` function 
 	void SerialLog::_printf(const char* format, ...)
@@ -68,7 +62,7 @@ namespace dream
 			va_end(arg);
 		}
 
-		for (Stream *s : SerialLog::_outputs) s->write(buffer);
+		if (_output != nullptr) _output->write(buffer);
 	}
 }
 

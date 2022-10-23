@@ -1,5 +1,9 @@
 
-#define LOG_LEVEL 3 // All
+// Set log level to ALL 
+// (Log level have to be set before including library)
+#define LOG_LEVEL 3 
+
+// Include library
 #include <debug/serial_logging.h>
 
 void setup()
@@ -8,10 +12,10 @@ void setup()
 	Serial.begin(115200);
 
 	// Add Serial to logger outputs
-	dream::SerialLog::addOutput(&Serial);
+	dream::SerialLog::setOutput(Serial);
 
 	// Print to log
-	LOG_DEBUG("Hello from SerialLogging!");
+	LOG_DEBUG("Hello from SerialLogger!");
 
 	// Print using formatting
 	LOG_DEBUG("It's number: %d", 69);
