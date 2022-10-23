@@ -8,7 +8,7 @@
 ![GitHub](https://img.shields.io/github/license/DreamerDeLy/dream)
 ![GitHub repo size](https://img.shields.io/github/repo-size/DreamerDeLy/dream)
 
-DREAM (_**D**ynamic **R**eal-time **E**mbedded **A**rduino **M**odules_) is a collection of usefull modules for ESP8266/ESP32 projects on the Arduino Framework.
+DREAM (_**D**ynamic **R**eal-time **E**mbedded **A**rduino **M**odules_) is a collection of useful modules for ESP8266/ESP32 projects on the Arduino Framework.
 
 ## Installation 
 
@@ -25,7 +25,7 @@ Also you can select specific version, using tag:
 
 ```ini
 lib_deps = 
-	https://github.com/DreamerDeLy/dream.git#v0.2.0
+	https://github.com/DreamerDeLy/dream.git#v0.4.0
 ```
 
 **For ArduinoIDE**: 
@@ -54,12 +54,13 @@ This project created with [PlatformIO](https://platformio.org/).
 Use this commands to build examples: 
 
 ```powershell
-pio ci --board=esp32dev examples/CLI/ --lib src/
+pio ci --board=esp32dev examples/CLI_Basic/ --lib src/
+pio ci --board=esp32dev examples/CLI_Continuous/ --lib src/
 pio ci --board=esp32dev examples/SerialLogging/ --lib src/
 pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
 pio ci --board=esp32dev examples/Values/ --lib src/
-pio ci --board=esp32dev examples/TimerSimple/ --lib src/
-pio ci --board=esp32dev examples/TimerCallbacks/ --lib src/
+pio ci --board=esp32dev examples/Timer_Basic/ --lib src/
+pio ci --board=esp32dev examples/Timer_Callbacks/ --lib src/
 ```
 
 Use this command to run tests (you have to have connected ESP32 to your computer):
