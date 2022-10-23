@@ -5,6 +5,7 @@ jobs:
       - image: suculent/platformio-docker-build
     steps:
       - checkout
+      - run: pio upgrade
       - run: pio ci --board=esp32dev examples/CLI/ --lib src/
       - run: pio ci --board=esp32dev examples/SerialLogging/ --lib src/
       - run: pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
