@@ -16,23 +16,26 @@
 
 #include <Arduino.h>
 
-class SimpleStopwatch
+namespace dream
 {
-	private:
-	unsigned long _start_time = millis();
-
-	public:
-	SimpleStopwatch() {}
-
-	// Start calculation
-	void start()
+	class SimpleStopwatch
 	{
-		_start_time = millis();
-	}
+		private:
+		unsigned long _start_time = millis();
 
-	// Get elapsed time
-	unsigned long getTime() const
-	{
-		return (millis() - _start_time);
-	}
-};
+		public:
+		SimpleStopwatch() {}
+
+		// Start calculation
+		void start()
+		{
+			_start_time = millis();
+		}
+
+		// Get elapsed time
+		unsigned long getTime() const
+		{
+			return (millis() - _start_time);
+		}
+	};	
+}

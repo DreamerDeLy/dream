@@ -1,6 +1,7 @@
 
 // Include library
 #include <realtime/simple_timer.h>
+using namespace dream;
 
 // Create timer and set interval
 SimpleTimer timer = SimpleTimer(/* interval: */ 5000);
