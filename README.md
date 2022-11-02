@@ -43,6 +43,8 @@ lib_deps =
 - **Debug**
   - [**CLI**](src/debug/cli.h) - Library for the developer's CLI, into which any command can be integrated.
   - [**Serial Logging**](src/debug/serial_logging.h) - Macro-based logging library.
+- **NET**
+  - [**HTTPPackage**](src/net/HTTPPackage.h) - Module for generating HTTP packages.
 - **Realtime**
   - [**Simple Timer**](src/realtime/simple_timer.h) - Simple software timer. 
   - [**Simple Stopwatch**](src/realtime/simple_stopwatch.h) - A simple object for measuring the elapsed time between the execution of some functions. 
@@ -61,6 +63,7 @@ pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
 pio ci --board=esp32dev examples/Values/ --lib src/
 pio ci --board=esp32dev examples/Timer_Basic/ --lib src/
 pio ci --board=esp32dev examples/Timer_Callbacks/ --lib src/
+pio ci --board=esp32dev examples/HTTPPackage/ --lib src/
 ```
 
 Use this command to run tests (you have to have connected ESP32 to your computer):
