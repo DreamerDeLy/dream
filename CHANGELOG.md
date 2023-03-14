@@ -34,3 +34,8 @@
 
 * SimpleTimer та SimpleStopwatch додані до загального namespace.
 * Додано HTTPPackage.
+
+## v0.6.0
+*14.03.2023*
+
+* Додано HTTPPackageParser разом з тестами і прикладом. 
