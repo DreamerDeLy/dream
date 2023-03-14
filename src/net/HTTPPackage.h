@@ -8,47 +8,31 @@
  Commands can by layered (`p.setUserAgent("esp").setContentType("text/html");`).
  
 --------------------------------------------------------------------------------
- Copyright © 2019-2022 Dmytro Obukhov (DeLy Dreamer)
+ Copyright © 2019-2023 Dmytro Obukhov (DeLy Dreamer)
  License: https://www.gnu.org/licenses/gpl-3.0.html
 ================================================================================
 */
 
+#pragma once
+
 #include <Arduino.h>
 
 #include <base64.h> // BasicAuth
+#include "HTTPRequestType.h"
 
 namespace dream
 {
-	enum class HTTPRequestType 
-	{ 
-		GET,
-		POST,
-		PUT
-	};
-
 	class HTTPPackage
 	{
 		protected: //-----------------------------------------------------------
 
 		String _buffer = "";
 
-		String typeToString(HTTPRequestType t)
-		{
-			switch (t)
-			{
-			case HTTPRequestType::GET: return "GET";
-			case HTTPRequestType::POST: return "POST";
-			case HTTPRequestType::PUT: return "PUT";
-			}
-
-			return "";
-		}
-
 		public: //--------------------------------------------------------------
 
 		HTTPPackage(HTTPRequestType type, const String &host, const String &url)
 		{
-			_buffer += typeToString(type) + " " + url + " HTTP/1.1\r\n";
+			_buffer += HTTPTypeToString(type) + " " + url + " HTTP/1.1\r\n";
 			_buffer += "Host: " + host + "\r\n";
 		}
 
