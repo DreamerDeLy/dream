@@ -24,7 +24,7 @@ namespace dream
 	typedef std::vector<String> CommandParams;
 
 	// Command function
-	typedef std::function<void(CommandParams)> CommandFunction;
+	typedef std::function<void(CommandParams params, Print& output)> CommandFunction;
 
 	class CommandLineInterface
 	{
@@ -43,6 +43,9 @@ namespace dream
 
 		// Source for continuous reading
 		Stream *_source = nullptr;
+
+		// Output for command result
+		Print *_output = nullptr;
 
 		// Function to call in case of error
 		std::function<void(String)> _errorHandler;
@@ -95,21 +98,61 @@ namespace dream
 			return result;
 		}
 
+		// Run command
+		void runCommand(String command, Print *output)
+		{
+			if (command.isEmpty()) 
+			{
+				_errorHandler("Command is empty");
+				return;
+			}
+
+			if (output == nullptr)
+			{
+				_errorHandler("Output not specified");
+				return;
+			}
+
+			// Trim string
+			command.trim();
+
+			// Parse command name and arguments
+			const String name = getFirstArgument(command, ' ');
+			const std::vector<String> params = splitString(command.substring(name.length()), ' ');
+
+			// Find command
+			for (const Command &c : _commands)
+			{
+				if (c.name == name)
+				{
+					// Run command
+					c.run(params, *output);
+
+					return;
+				}
+			}
+			
+			// Command wasn't found
+			_errorHandler("Command " + command + " not found");
+			return;
+		}
+
 		public: //--------------------------------------------------------------
 
-		// Init CLI in basic mode
-		// In this mode you have to manually cal `run(string)` method.
-		CommandLineInterface() { }
+		// Init CLI with default input and output
+		CommandLineInterface() : _source(&Serial), _output(&Serial) { }
 
-		// Init CLI with reading from source 
-		// In this mode you have to place `tick()` method call to your `loop()` 
-		// or you still can use `run(string)` method as well.
-		CommandLineInterface(Stream *s) : _source(s) { }
-		CommandLineInterface(Stream &s) : _source(&s) { }
+		// Init CLI with input and output specified
+		CommandLineInterface(Stream *source, Print *output) : _source(source), _output(output) { }
+		CommandLineInterface(Stream &source, Print &output) : _source(&source), _output(&output) { }
 
-		// Change mode to reading from source
+		// Change source
 		void setSource(Stream *s) { _source = s; }
 		void setSource(Stream &s) { _source = &s; }
+		
+		// Change source
+		void setOutput(Print *s) { _output = s; }
+		void setOutput(Print &s) { _output = &s; }
 
 		// Set function to call in case of error
 		// Error message will be set as String argument
@@ -144,30 +187,19 @@ namespace dream
 		// Run command from string
 		void run(String command)
 		{
-			if (command.isEmpty()) return;
+			runCommand(command, _output);
+		}
 
-			// Trim string
-			command.trim();
+		// Run command from string with separate output
+		void run(String command, Print &output)
+		{
+			runCommand(command, &output);
+		}
 
-			// Parse command name and arguments
-			const String name = getFirstArgument(command, ' ');
-			const std::vector<String> params = splitString(command.substring(name.length()), ' ');
-
-			// Find command
-			for (const Command &c : _commands)
-			{
-				if (c.name == name)
-				{
-					// Run command
-					c.run(params);
-
-					return;
-				}
-			}
-			
-			// Command wasn't found
-			_errorHandler("[CLI] Command " + command + " not found");
-			return;
+		// Run command from string with separate output
+		void run(String command, Print *output)
+		{
+			runCommand(command, output);
 		}
 	};
 }
