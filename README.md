@@ -25,7 +25,7 @@ Also you can select specific version, using tag:
 
 ```ini
 lib_deps = 
-	https://github.com/DreamerDeLy/dream.git#v0.4.0
+	https://github.com/DreamerDeLy/dream.git#v0.7.0
 ```
 
 **For ArduinoIDE**: 
@@ -44,8 +44,8 @@ lib_deps =
   - [**CLI**](src/debug/cli.h) - Library for the developer's CLI, into which any command can be integrated.
   - [**Serial Logging**](src/debug/serial_logging.h) - Macro-based logging library.
 - **NET**
-  - [**HTTPPackage**](src/net/HTTPPackage.h) - Module for generating HTTP packages.
-  - [**HTTPPackageParser**](src/net/HTTPPackageParser.h) - HTTP packages parser for reading responses from servers.
+  - [**HTTPRequest**](src/net/HTTPRequest.h) - Generator of HTTP request packages.
+  - [**HTTPResponse**](src/net/HTTPResponse.h) - Module for parsing HTTP response packages.
 - **Realtime**
   - [**Simple Timer**](src/realtime/simple_timer.h) - Simple software timer. 
   - [**Simple Stopwatch**](src/realtime/simple_stopwatch.h) - A simple object for measuring the elapsed time between the execution of some functions. 
@@ -57,15 +57,14 @@ This project created with [PlatformIO](https://platformio.org/).
 Use this commands to build examples: 
 
 ```powershell
-pio ci --board=esp32dev examples/CLI_Basic/ --lib src/
-pio ci --board=esp32dev examples/CLI_Continuous/ --lib src/
+pio ci --board=esp32dev examples/CLI/ --lib src/
 pio ci --board=esp32dev examples/SerialLogging/ --lib src/
 pio ci --board=esp32dev examples/UnitsConversion/ --lib src/
 pio ci --board=esp32dev examples/Values/ --lib src/
 pio ci --board=esp32dev examples/Timer_Basic/ --lib src/
 pio ci --board=esp32dev examples/Timer_Callbacks/ --lib src/
-pio ci --board=esp32dev examples/HTTPPackage/ --lib src/
-pio ci --board=esp32dev examples/HTTPParser/ --lib src/
+pio ci --board=esp32dev examples/HTTPRequest/ --lib src/
+pio ci --board=esp32dev examples/HTTPResponse/ --lib src/
 ```
 
 Use this command to run tests (you have to have connected ESP32 to your computer):

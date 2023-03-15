@@ -32,10 +32,17 @@
 ## v0.5.0
 *02.11.2022*
 
-* SimpleTimer та SimpleStopwatch додані до загального namespace.
+* SimpleTimer та SimpleStopwatch додані до загального `namespace`.
 * Додано HTTPPackage.
 
 ## v0.6.0
 *14.03.2023*
 
 * Додано HTTPPackageParser разом з тестами і прикладом. 
+
+## v0.7.0
+*15.03.2023*
+
+* Модулі HTTPPackage та HTTPPackageParser перейменовані на HTTPRequest та HTTPResponse відповідно. 
+* HTTPRequestType перетворене з enum `class` на простий `enum`, що б спростити синтаксис.
+* В CLI додана підтримка встановлення `output`. 
