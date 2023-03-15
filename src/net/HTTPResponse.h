@@ -19,11 +19,12 @@
 
 namespace dream
 {
-	class HTTPPackageParser
+	class HTTPResponse
 	{
 		private: //-------------------------------------------------------------
 
-		struct HTTPRequestHeader
+		// Object of HTTP package header
+		struct HTTPHeader
 		{
 			String name;
 			String value;
@@ -36,8 +37,9 @@ namespace dream
 		int _http_code;
 
 		// Headers
-		std::vector<HTTPRequestHeader> _headers;
+		std::vector<HTTPHeader> _headers;
 
+		// Some common headers as values
 		int _content_length;
 		String _content_type;
 		String _location;
@@ -132,7 +134,7 @@ namespace dream
 
 		public: //--------------------------------------------------------------
 
-		HTTPPackageParser(const String &package) 
+		HTTPResponse(const String &package) 
 		{
 			_buffer = package;
 			_buffer.trim();
@@ -141,20 +143,23 @@ namespace dream
 			headersDataToValues();
 		}
 
+		// Get some of most common headers
 		int getStatus() { return _http_code; }
 		int getContentLength() { return _content_length; } 
 		String getContentType() { return _content_type; } 
 		String getLocation() { return _location; } 
 		String getDate() { return _date; } 
 
-		std::vector<HTTPRequestHeader> getHeaders()
+		// Get list of headers
+		std::vector<HTTPHeader> getHeaders()
 		{
 			return _headers;
 		}
 
+		// Check if package has header
 		bool hasHeader(const String &name)
 		{
-			for (const HTTPRequestHeader &h : _headers)
+			for (const HTTPHeader &h : _headers)
 			{
 				if (h.name == name) return true;
 			}
@@ -162,9 +167,10 @@ namespace dream
 			return false;
 		}
 
+		// Get value of header
 		String getHeader(const String &name)
 		{
-			for (const HTTPRequestHeader &h : _headers)
+			for (const HTTPHeader &h : _headers)
 			{
 				if (h.name == name) return h.value;
 			}
@@ -172,6 +178,7 @@ namespace dream
 			return "";
 		}
 
+		// Get body data
 		String getBody()
 		{
 			return _body;

@@ -22,7 +22,7 @@
 
 namespace dream
 {
-	class HTTPPackage
+	class HTTPRequest
 	{
 		protected: //-----------------------------------------------------------
 
@@ -30,40 +30,40 @@ namespace dream
 
 		public: //--------------------------------------------------------------
 
-		HTTPPackage(HTTPRequestType type, const String &host, const String &url)
+		HTTPRequest(HTTPRequestType type, const String &host, const String &url)
 		{
 			_buffer += HTTPTypeToString(type) + " " + url + " HTTP/1.1\r\n";
 			_buffer += "Host: " + host + "\r\n";
 		}
 
 		// Add custom header
-		HTTPPackage& addHeader(const String &name, const String &value)
+		HTTPRequest& addHeader(const String &name, const String &value)
 		{
 			_buffer += (name + ": " + value + "\r\n");
 			return *this;
 		}
 
 		// Set User-Agent header
-		HTTPPackage& setUserAgent(const String &user_agent)
+		HTTPRequest& setUserAgent(const String &user_agent)
 		{
 			return addHeader(F("User-Agent"), user_agent);
 		}
 
 		// Set Content-Type header
-		HTTPPackage& setContentType(const String &content_type)
+		HTTPRequest& setContentType(const String &content_type)
 		{
 			return addHeader(F("Content-Type"), content_type);
 		}
 
 		// Set BasicAuth 
-		HTTPPackage& setAuthorization(const String &user, const String &pass)
+		HTTPRequest& setAuthorization(const String &user, const String &pass)
 		{
 			_buffer += "Authorization: Basic " + base64::encode(user + ":" + pass);
 			return *this;
 		}
 
 		// Add package body
-		HTTPPackage& setBody(const String &data)
+		HTTPRequest& setBody(const String &data)
 		{
 			addHeader(F("Content-Length"), String(data.length()));
 
@@ -74,7 +74,7 @@ namespace dream
 		}
 
 		// End package
-		HTTPPackage& setEmptyBody()
+		HTTPRequest& setEmptyBody()
 		{
 			_buffer += "Connection: close\r\n\r\n";
 			return *this;

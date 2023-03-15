@@ -1,6 +1,6 @@
 
 // Include library
-#include <net/HTTPPackage.h>
+#include <net/HTTPRequest.h>
 
 using namespace dream;
 
@@ -13,7 +13,7 @@ void setup()
 	Serial.begin(115200);
 	
 	// Create GET request
-	HTTPPackage get = HTTPPackage(HTTPRequestType::GET, "google.com", "/")
+	HTTPRequest get = HTTPRequest(GET, "google.com", "/")
 		.setUserAgent("ESP")
 		.addHeader("X-My-Header", "value")
 		.setEmptyBody();
@@ -23,7 +23,7 @@ void setup()
 	Serial.println();
 
 	// Create POST request
-	HTTPPackage post = HTTPPackage(HTTPRequestType::POST, "eco-city.org.ua", "/")
+	HTTPRequest post = HTTPRequest(POST, "eco-city.org.ua", "/")
 		.setUserAgent("ESP")
 		.setContentType("application/json");
 

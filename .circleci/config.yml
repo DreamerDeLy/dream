@@ -13,5 +13,5 @@ jobs:
       - run: pio ci --board=esp32dev examples/Values/ --lib src/
       - run: pio ci --board=esp32dev examples/Timer_Basic/ --lib src/
       - run: pio ci --board=esp32dev examples/Timer_Callbacks/ --lib src/
-      - run: pio ci --board=esp32dev examples/HTTPPackage/ --lib src/
-      - run: pio ci --board=esp32dev examples/HTTPParser/ --lib src/
+      - run: pio ci --board=esp32dev examples/HTTPRequest/ --lib src/
+      - run: pio ci --board=esp32dev examples/HTTPResponse/ --lib src/

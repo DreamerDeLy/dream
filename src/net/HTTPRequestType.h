@@ -5,7 +5,7 @@
 
 namespace dream
 {
-	enum class HTTPRequestType 
+	enum HTTPRequestType 
 	{ 
 		GET,
 		POST,
