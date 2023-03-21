@@ -25,7 +25,7 @@ Also you can select specific version, using tag:
 
 ```ini
 lib_deps = 
-	https://github.com/DreamerDeLy/dream.git#v0.7.0
+	https://github.com/DreamerDeLy/dream.git#v0.8.0
 ```
 
 **For ArduinoIDE**: 
@@ -44,8 +44,8 @@ lib_deps =
   - [**CLI**](src/debug/cli.h) - Library for the developer's CLI, into which any command can be integrated.
   - [**Serial Logging**](src/debug/serial_logging.h) - Macro-based logging library.
 - **NET**
-  - [**HTTPRequest**](src/net/HTTPRequest.h) - Generator of HTTP request packages.
-  - [**HTTPResponse**](src/net/HTTPResponse.h) - Module for parsing HTTP response packages.
+  - [**HTTPRequest**](src/net/http_request.h) - Generator of HTTP request packages.
+  - [**HTTPResponse**](src/net/http_response.h) - Module for parsing HTTP response packages.
 - **Realtime**
   - [**Simple Timer**](src/realtime/simple_timer.h) - Simple software timer. 
   - [**Simple Stopwatch**](src/realtime/simple_stopwatch.h) - A simple object for measuring the elapsed time between the execution of some functions. 
