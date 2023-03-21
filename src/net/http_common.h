@@ -5,22 +5,34 @@
 
 namespace dream
 {
-	enum HTTPRequestType 
+	enum HTTPMethod 
 	{ 
 		GET,
 		POST,
 		PUT
 	};
 
-	String HTTPTypeToString(HTTPRequestType t)
+	String HTTPMethodToString(HTTPMethod t)
 	{
 		switch (t)
 		{
-		case HTTPRequestType::GET: return "GET";
-		case HTTPRequestType::POST: return "POST";
-		case HTTPRequestType::PUT: return "PUT";
+		case HTTPMethod::GET: return "GET";
+		case HTTPMethod::POST: return "POST";
+		case HTTPMethod::PUT: return "PUT";
 		}
 
 		return "";
 	}
+
+	// Object of HTTP package header
+	struct HTTPHeader
+	{
+		String name;
+		String value;
+
+		String toString() const 
+		{
+			return String(name + ": " + value);
+		}
+	};
 }

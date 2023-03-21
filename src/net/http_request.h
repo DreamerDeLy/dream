@@ -4,7 +4,6 @@
 --------------------------------------------------------------------------------
  
  HTTP package generator. 
- Commands have to be called in right order as in examples.
  Commands can by layered (`p.setUserAgent("esp").setContentType("text/html");`).
  
 --------------------------------------------------------------------------------
@@ -16,74 +15,115 @@
 #pragma once
 
 #include <Arduino.h>
-
 #include <base64.h> // BasicAuth
+
 #include "http_common.h"
 
 namespace dream
 {
 	class HTTPRequest
 	{
-		protected: //-----------------------------------------------------------
+		private: //-------------------------------------------------------------
 
-		String _buffer = "";
+		HTTPMethod _type;
+		String _host;
+		String _url;
+
+		// Package body
+		String _body = "";
+
+		// Package headers
+		std::vector<HTTPHeader> _headers = { };
+
+		// Check if header exist
+		int findHeaderIndex(const String &name)
+		{
+			for (int i = 0; i < _headers.size(); i++)
+			{
+				if (_headers[i].name == name) return i;
+			}
+			
+			return -1;
+		};
 
 		public: //--------------------------------------------------------------
 
-		HTTPRequest(HTTPRequestType type, const String &host, const String &url)
-		{
-			_buffer += HTTPTypeToString(type) + " " + url + " HTTP/1.1\r\n";
-			_buffer += "Host: " + host + "\r\n";
-		}
+		HTTPRequest(HTTPMethod type, const String &host, const String &url) :
+			_type(type),
+			_host(host),
+			_url(url)
+		{ }
 
 		// Add custom header
 		HTTPRequest& addHeader(const String &name, const String &value)
 		{
-			_buffer += (name + ": " + value + "\r\n");
+			HTTPHeader header = { name, value };
+
+			int i = findHeaderIndex(name);
+
+			if (i != -1)
+			{
+				_headers[i] = header;
+			}
+			else
+			{
+				_headers.push_back(header);
+			}
+
+			// _buffer += (name + ": " + value + "\r\n");
 			return *this;
 		}
 
 		// Set User-Agent header
 		HTTPRequest& setUserAgent(const String &user_agent)
 		{
-			return addHeader(F("User-Agent"), user_agent);
+			return addHeader("User-Agent", user_agent);
 		}
 
 		// Set Content-Type header
 		HTTPRequest& setContentType(const String &content_type)
 		{
-			return addHeader(F("Content-Type"), content_type);
+			return addHeader("Content-Type", content_type);
 		}
 
 		// Set BasicAuth 
 		HTTPRequest& setAuthorization(const String &user, const String &pass)
 		{
-			_buffer += "Authorization: Basic " + base64::encode(user + ":" + pass);
-			return *this;
+			return addHeader("Authorization", "Basic " + base64::encode(user + ":" + pass));
 		}
 
 		// Add package body
 		HTTPRequest& setBody(const String &data)
 		{
-			addHeader(F("Content-Length"), String(data.length()));
+			addHeader("Content-Length", String(data.length()));
+	
+			_body += data + "\r\n";
 
-			_buffer += "Connection: close\r\n\r\n";
-			_buffer += data + "\r\n";
-
-			return *this;
-		}
-
-		// End package
-		HTTPRequest& setEmptyBody()
-		{
-			_buffer += "Connection: close\r\n\r\n";
 			return *this;
 		}
 
 		// Get package
-		String getBuffer()
+		String toString()
 		{
-			return _buffer;
+			String buffer = "";
+
+			buffer += HTTPMethodToString(_type) + " " + _url + " HTTP/1.1\r\n";
+			buffer += "Host: " + _host + "\r\n";
+
+			for (const HTTPHeader &h : _headers)
+			{
+				buffer += h.name + ": " + h.value + "\r\n";
+			}
+
+			buffer += "Connection: close\r\n";
+
+			if (_body.isEmpty() == false) 
+			{
+				buffer += "\r\n";
+				buffer += _body;
+			}
+
+			return buffer;
 		}
 	};
 } 

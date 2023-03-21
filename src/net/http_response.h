@@ -17,18 +17,13 @@
 #include <Arduino.h>
 #include <vector>
 
+#include "http_common.h"
+
 namespace dream
 {
 	class HTTPResponse
 	{
 		private: //-------------------------------------------------------------
-
-		// Object of HTTP package header
-		struct HTTPHeader
-		{
-			String name;
-			String value;
-		};
 
 		// Buffer for package as string
 		String _buffer;

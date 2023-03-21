@@ -15,11 +15,10 @@ void setup()
 	// Create GET request
 	HTTPRequest get = HTTPRequest(GET, "google.com", "/")
 		.setUserAgent("ESP")
-		.addHeader("X-My-Header", "value")
-		.setEmptyBody();
+		.addHeader("X-My-Header", "value");
 	
 	// Print package
-	Serial.println(get.getBuffer());
+	Serial.println(get.toString());
 	Serial.println();
 
 	// Create POST request
@@ -34,7 +33,7 @@ void setup()
 	post.setBody("{\"data\": true}");
 
 	// Print package
-	Serial.println(post.getBuffer());
+	Serial.println(post.toString());
 	Serial.println();
 }
 
