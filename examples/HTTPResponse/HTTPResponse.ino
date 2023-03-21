@@ -1,6 +1,6 @@
 
 // Include library
-#include <net/HTTPResponse.h>
+#include <net/http_response.h>
 
 using namespace dream;
 

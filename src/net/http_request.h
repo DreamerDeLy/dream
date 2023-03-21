@@ -18,7 +18,7 @@
 #include <Arduino.h>
 
 #include <base64.h> // BasicAuth
-#include "HTTPRequestType.h"
+#include "http_common.h"
 
 namespace dream
 {

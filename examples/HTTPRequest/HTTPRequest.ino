@@ -1,6 +1,6 @@
 
 // Include library
-#include <net/HTTPRequest.h>
+#include <net/http_request.h>
 
 using namespace dream;
 

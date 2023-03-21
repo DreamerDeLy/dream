@@ -1,6 +1,6 @@
 #include <unity.h>
 
-#include <net/HTTPPackageParser.h>
+#include <net/http_response.h>
 
 using namespace dream;
 
@@ -20,7 +20,7 @@ void test_status(void)
 {
 	String package = "HTTP/1.1 200 OK\r\nDate: Tue, 14 Mar 2023 11:37:03 GMT\r\nServer: Apache/2.4.38 (Debian)\r\nCache-Control: no-cache, must-revalidate\r\nExpires: Sat, 26 Jul 1997 05:00:00 GMT\r\nVary: Accept-Encoding\r\nContent-Length: 19\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\n\t\"key\": true\n}";
 
-	auto parser = HTTPPackageParser(package);
+	auto parser = HTTPResponse(package);
 
 	TEST_ASSERT_EQUAL_INT(200, parser.getStatus());
 }
@@ -29,7 +29,7 @@ void test_headers_count(void)
 {
 	String package = "HTTP/1.1 200 OK\r\nDate: Tue, 14 Mar 2023 11:37:03 GMT\r\nServer: Apache/2.4.38 (Debian)\r\nCache-Control: no-cache, must-revalidate\r\nExpires: Sat, 26 Jul 1997 05:00:00 GMT\r\nVary: Accept-Encoding\r\nContent-Length: 19\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\n\t\"key\": true\n}";
 
-	auto parser = HTTPPackageParser(package);
+	auto parser = HTTPResponse(package);
 
 	TEST_ASSERT_EQUAL_INT(8, parser.getHeaders().size());
 }
@@ -38,7 +38,7 @@ void test_header_get(void)
 {
 	String package = "HTTP/1.1 200 OK\r\nDate: Tue, 14 Mar 2023 11:37:03 GMT\r\nServer: Apache/2.4.38 (Debian)\r\nCache-Control: no-cache, must-revalidate\r\nExpires: Sat, 26 Jul 1997 05:00:00 GMT\r\nVary: Accept-Encoding\r\nContent-Length: 19\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\n\t\"key\": true\n}";
 
-	auto parser = HTTPPackageParser(package);
+	auto parser = HTTPResponse(package);
 
 	TEST_ASSERT_EQUAL_STRING("Tue, 14 Mar 2023 11:37:03 GMT", parser.getHeader("Date").c_str());
 	TEST_ASSERT_EQUAL_STRING("Apache/2.4.38 (Debian)", parser.getHeader("Server").c_str());
@@ -50,7 +50,7 @@ void test_body(void)
 {
 	String package = "HTTP/1.1 200 OK\r\nDate: Tue, 14 Mar 2023 11:37:03 GMT\r\nServer: Apache/2.4.38 (Debian)\r\nCache-Control: no-cache, must-revalidate\r\nExpires: Sat, 26 Jul 1997 05:00:00 GMT\r\nVary: Accept-Encoding\r\nContent-Length: 19\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\n\t\"key\": true\n}";
 
-	auto parser = HTTPPackageParser(package);
+	auto parser = HTTPResponse(package);
 
 	TEST_ASSERT_EQUAL_STRING("{\n\t\"key\": true\n}", parser.getBody().c_str());
 }
@@ -59,7 +59,7 @@ void test_values_headers(void)
 {
 	String package = "HTTP/1.1 200 OK\r\nDate: Tue, 14 Mar 2023 11:37:03 GMT\r\nServer: Apache/2.4.38 (Debian)\r\nCache-Control: no-cache, must-revalidate\r\nExpires: Sat, 26 Jul 1997 05:00:00 GMT\r\nVary: Accept-Encoding\r\nContent-Length: 19\r\nConnection: close\r\nContent-Type: application/json\r\n\r\n{\n    \"key\": true\n}";
 
-	auto parser = HTTPPackageParser(package);
+	auto parser = HTTPResponse(package);
 
 	TEST_ASSERT_EQUAL_STRING("application/json", parser.getContentType().c_str());
 	TEST_ASSERT_EQUAL_STRING("Tue, 14 Mar 2023 11:37:03 GMT", parser.getDate().c_str());
