@@ -16,6 +16,7 @@
 
 #include <Arduino.h>
 #include <base64.h> // BasicAuth
+#include <vector> // Headers list
 
 #include "http_common.h"
 
