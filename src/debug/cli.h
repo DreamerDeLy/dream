@@ -50,14 +50,14 @@ namespace dream
 		// Function to call in case of error
 		std::function<void(String)> _errorHandler;
 
-		// Get first substring by separator
-		static String getFirstArgument(const String &data, const char separator)
+		// Get first substring
+		static String getFirstArgument(const String &data)
 		{
 			String result = "";
 
 			for(char c : data)
 			{
-				if (c != separator)
+				if (c != ' ')
 				{
 					// Add to result
 					result += c;
@@ -73,23 +73,43 @@ namespace dream
 		}
 
 		// Split string by separator
-		static std::vector<String> splitString(const String &data, const char separator)
+		static std::vector<String> splitString(const String &data)
 		{
 			std::vector<String> result;
-			String new_str = "";
+			String new_str = ""; // Buffer for new argument 
+			char current_quotation_marks = ' ';
 
 			for (int i = 0; i < data.length(); i++)
 			{
 				char c = data[i];
-				if (c != separator) 
+
+				// Check string in
+				if (current_quotation_marks == ' ')
 				{
-					new_str += c;
+					if (c == '"' || c == '\'' )
+					{
+						current_quotation_marks = c;
+						continue;
+					}
 				}
 				else
+				{
+					if (c == current_quotation_marks)
+					{
+						current_quotation_marks = ' ';
+						continue;
+					}
+				}
+
+				if (c == ' ' && current_quotation_marks == ' ') 
 				{
 					new_str.trim();
 					if (!new_str.isEmpty()) result.push_back(new_str);
 					new_str = "";
+				}
+				else
+				{
+					new_str += c;
 				}
 			}
 
@@ -117,8 +137,8 @@ namespace dream
 			command.trim();
 
 			// Parse command name and arguments
-			const String name = getFirstArgument(command, ' ');
-			const std::vector<String> params = splitString(command.substring(name.length()), ' ');
+			const String name = getFirstArgument(command);
+			const std::vector<String> params = splitString(command.substring(name.length()));
 
 			// Find command
 			for (const Command &c : _commands)
