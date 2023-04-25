@@ -12,6 +12,8 @@ namespace dream
 		PUT
 	};
 
+	String HTTPMethodToString(HTTPMethod t);
+
 	String HTTPMethodToString(HTTPMethod t)
 	{
 		switch (t)
