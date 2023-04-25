@@ -25,7 +25,7 @@ Also you can select specific version, using tag:
 
 ```ini
 lib_deps = 
-	https://github.com/DreamerDeLy/dream.git#v0.8.0
+	https://github.com/DreamerDeLy/dream.git#v0.9.0
 ```
 
 **For ArduinoIDE**: 
